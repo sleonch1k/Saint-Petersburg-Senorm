@@ -126,7 +126,7 @@ class Player(pygame.sprite.Sprite):  # создание модели персо�
     #     print(self.y)
 
 class Bullet():
-    global laser_rect, rect_y, image_laser
+    global laser_rect, image_laser
 
     def __init__(self, x, y):
         # super().__init__()
@@ -149,9 +149,13 @@ class Bullet():
 
 class Target():
     global target, target_rect
-    def __init__(self):
+    def firstTarget(self):
         screen.blit(target, (1300, 156))
+
+    def secondTarget(self):
         screen.blit(target, (1300, 456))
+
+    def trihrdTarget(self):
         screen.blit(target, (1300, 756))
 
 
@@ -255,6 +259,7 @@ clock = pygame.time.Clock()
 
 while not done:
     Level(object)
+    pygame.mouse.set_visible(False)
 
     for event in pygame.event.get():
 
@@ -290,7 +295,9 @@ while not done:
         player.rect.left = 0
 
     current_level.draw(screen)
-    Target()
+    Target().firstTarget()
+    Target().secondTarget()
+    Target().trihrdTarget()
     active_sprite_list.draw(screen)
 
     clock.tick(30)
