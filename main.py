@@ -120,25 +120,26 @@ class Player(pygame.sprite.Sprite):  # создание модели персо�
     #     print(self.y)
 
 class Bullet():
-    global laser_rect, rect
+    global laser_rect, rect, image_laser
 
     def __init__(self, x, y):
         # super().__init__()
         # self.rect = rect
         # self.laser_rect = laser_rect
-        self.x = 340
+        self.x = x
         self.y = y
         # if self.y == self.rect.y:
         #     print(self.y)
 
     def move(self):
-        self.x += 15
-        if self.x <= 1920:
-            screen.blit(image_laser, (self.x, self.y))
-            print(self.y)
-            return True
-        else:
-            return False
+        # self.x += 15
+        # if self.x <= 1920:
+        screen.blit(image_laser, (340, 200))
+        print(12)
+
+        return True
+        # else:
+        #     return False
 
 
 # class Bullet():
@@ -259,11 +260,11 @@ while not done:
                 print(player.rect.x)
                 # player.stop()
                 # h = (rect_x + rect_width, rect_y)
-                all_btn_bullets.append(Bullet(rect_x + rect_width, rect_y))
-
-                for bullet in all_btn_bullets:
-                    if not bullet.move():
-                        all_btn_bullets.remove(bullet)
+                Bullet(340, 200).move()
+                pygame.display.flip()
+                # for bullet in all_btn_bullets:
+                #     if not bullet.move():
+                #         all_btn_bullets.remove(bullet)
 
     active_sprite_list.update()
 
