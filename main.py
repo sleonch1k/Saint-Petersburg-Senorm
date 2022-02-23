@@ -43,13 +43,19 @@ is_start = False
 is_finish = False
 # laser_im = pygame.image.load('Laser.png')
 laser = pygame.image.load('Laser.png')
-image_laser = pygame.transform.scale(laser, (150, 30))
+image_laser = pygame.transform.scale(laser, (1700, 20))
 laser_rect = image_laser.get_rect()
 image = pygame.image.load('player.png')
 image = pygame.transform.scale(image, (100, 100))
 rect = image.get_rect()
 start_button = Button(100, 200, start_img, 0.8)
 exit_button = Button(450, 200, exit_img, 0.8)
+target = pygame.image.load('target.png')
+target = pygame.transform.scale(target, (100, 100))
+target_rect = target.get_rect()
+target_rect.x = 1700
+target_rect.y = 350
+
 
 
 def menu():  # создание окна основного меню
@@ -120,11 +126,11 @@ class Player(pygame.sprite.Sprite):  # создание модели персо�
     #     print(self.y)
 
 class Bullet():
-    global laser_rect, rect, image_laser
+    global laser_rect, rect_y, image_laser
 
     def __init__(self, x, y):
         # super().__init__()
-        # self.rect = rect
+        self.rect_y = rect_y
         # self.laser_rect = laser_rect
         self.x = x
         self.y = y
@@ -134,12 +140,19 @@ class Bullet():
     def move(self):
         # self.x += 15
         # if self.x <= 1920:
-        screen.blit(image_laser, (340, 200))
-        print(12)
+        screen.blit(image_laser, (440, 300))
+        print(90)
 
         return True
         # else:
         #     return False
+
+class Target():
+    global target, target_rect
+    def __init__(self):
+        screen.blit(target, (1300, 156))
+        screen.blit(target, (1300, 456))
+        screen.blit(target, (1300, 756))
 
 
 # class Bullet():
@@ -234,15 +247,17 @@ player.rect.y = SCREEN_HEIGHT // 2
 # target_rect.x = 1700
 # target_rect.y = 350
 # active_sprite_list.add(target)
+# active_sprite_list.add(target_rect)
 active_sprite_list.add(player)
 done = False
 clock = pygame.time.Clock()
-all_btn_bullets = []
+
 
 while not done:
     Level(object)
 
     for event in pygame.event.get():
+
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 done = True
@@ -260,7 +275,7 @@ while not done:
                 print(player.rect.x)
                 # player.stop()
                 # h = (rect_x + rect_width, rect_y)
-                Bullet(340, 200).move()
+                Bullet(340, 500).move()
                 pygame.display.flip()
                 # for bullet in all_btn_bullets:
                 #     if not bullet.move():
@@ -275,6 +290,7 @@ while not done:
         player.rect.left = 0
 
     current_level.draw(screen)
+    Target()
     active_sprite_list.draw(screen)
 
     clock.tick(30)
