@@ -35,12 +35,17 @@ back = pygame.image.load('osnPfut.jpg')
 back = pygame.transform.scale(back, (800, 500))
 start_img = pygame.image.load('start_btn.png').convert_alpha()
 exit_img = pygame.image.load('exit_btn.png').convert_alpha()
+
+is_start = False
+is_finish = False
+start_button = Button(100, 200, start_img, 0.8)
+exit_button = Button(450, 200, exit_img, 0.8)
+
 rect_x = 1920 // 3
 rect_y = 1080 - 200
 rect_width = 100
 rect_height = 100
-is_start = False
-is_finish = False
+
 # laser_im = pygame.image.load('Laser.png')
 laser = pygame.image.load('Laser.png')
 image_laser = pygame.transform.scale(laser, (1700, 20))
@@ -48,13 +53,22 @@ laser_rect = image_laser.get_rect()
 image = pygame.image.load('player.png')
 image = pygame.transform.scale(image, (100, 100))
 rect = image.get_rect()
-start_button = Button(100, 200, start_img, 0.8)
-exit_button = Button(450, 200, exit_img, 0.8)
-target = pygame.image.load('target.png')
-target = pygame.transform.scale(target, (100, 100))
-target_rect = target.get_rect()
-target_rect.x = 1700
-target_rect.y = 350
+
+target1 = pygame.image.load('target.png')
+target1_dr = pygame.transform.scale(target1, (100, 100))
+target1 = target1_dr.get_rect()
+target2 = pygame.image.load('target.png')
+target2_dr = pygame.transform.scale(target2, (100, 100))
+target2 = target2_dr.get_rect()
+target3 = pygame.image.load('target.png')
+target3_dr = pygame.transform.scale(target3, (100, 100))
+target3 = target3_dr.get_rect()
+laser_group = pygame.sprite.Group()
+targetss = pygame.sprite.Group()
+laser1 = pygame.sprite.Sprite()
+target11 = pygame.sprite.Sprite()
+target21 = pygame.sprite.Sprite()
+target31 = pygame.sprite.Sprite()
 
 
 
@@ -79,7 +93,7 @@ def menu():  # создание окна основного меню
                 run = False
                 exit(0)
                 return
-            pygame.display.update()
+        pygame.display.update()
 
 
 menu()
@@ -118,77 +132,44 @@ class Player(pygame.sprite.Sprite):  # создание модели персо�
     def player_down(self):
         self.change_y = -9
 
-    # def shot(self):
-    #     self.x = 340
-    #     self.y = self.rect.y
-    #     pygame.draw.rect(screen, (255, 0, 0),
-    #                      (340, 500, 100, 100), 0)
-    #     print(self.y)
 
 class Bullet():
-    global laser_rect, image_laser
+    global laser_rect, image_laser, laser_group
 
     def __init__(self, x, y):
-        # super().__init__()
         self.rect_y = rect_y
-        # self.laser_rect = laser_rect
         self.x = x
         self.y = y
-        # if self.y == self.rect.y:
-        #     print(self.y)
 
     def move(self):
-        # self.x += 15
-        # if self.x <= 1920:
-        screen.blit(image_laser, (440, 300))
+        screen.blit(image_laser, (self.x, self.y))
         print(90)
 
         return True
+
+
+
+
         # else:
         #     return False
 
-class Target():
-    global target, target_rect
+
+class Target(pygame.sprite.Sprite):
+    global target1, target2, target3, tagetss, target1_dr, target2_dr, target3_dr
+
     def firstTarget(self):
-        screen.blit(target, (1300, 156))
+        screen.blit(target1_dr, (1300, 156))
 
     def secondTarget(self):
-        screen.blit(target, (1300, 456))
+        screen.blit(target2_dr, (1300, 456))
 
     def trihrdTarget(self):
-        screen.blit(target, (1300, 756))
+        screen.blit(target3_dr, (1300, 756))
 
-
-# class Bullet():
-#     global laser_rect, rect
-#
-#     def __init__(self, x, y):
-#         # super().__init__()
-#         self.rect = rect
-#         self.laser_rect = laser_rect
-#         self.x = 340
-#         self.y = self.rect.y
-#         if self.y == self.rect.y:
-#             print(self.y)
-#
-#     def move(self):
-#         self.x += 15
-#         if self.x <= 1920:
-#             screen.blit(self.laser_rect, (self.x, self.y))
-#             return True
-#         else:
-#             return False
-#
-
-# class Bullet(pygame.sprite.Sprite):
-# def __init__(self, x, y, radius, color):
-#     self.x = x
-#     self.y = y
-#     self.radius = radius
-#     self.color = color
-#     self.facing = 1
-#     self.vel = 8 * self.facing
-#
+    # def targets(self):
+    #     bullet = Bullet(self.rect.centerx, self.rect.top)
+    #     all_sprites.add(bullet)
+    #     bullets.add(bullet)
 # def draw(self):
 #
 # def update(self):
@@ -206,6 +187,7 @@ class Level(object):  # класс уровней, их основа
         self.player = player
 
     def draw(self, screen):
+        global arrow
         level = 1
         if level == 1:
             bg = pygame.image.load('planeta1_fon.jpg')
@@ -240,6 +222,8 @@ current_level_no = 0
 current_level = level_list[current_level_no]
 
 active_sprite_list = pygame.sprite.Group()
+# laser_group = pygame.sprite.Group()
+# targets = pygame.sprite.Group()
 player.level = current_level
 
 player.rect.x = 340
@@ -253,13 +237,21 @@ player.rect.y = SCREEN_HEIGHT // 2
 # active_sprite_list.add(target)
 # active_sprite_list.add(target_rect)
 active_sprite_list.add(player)
+# laser_group.add(laser_rect)
+# targets.add(target_rect)
 done = False
 clock = pygame.time.Clock()
 
-
+score = 0
 while not done:
     Level(object)
     pygame.mouse.set_visible(False)
+
+    current_level.draw(screen)
+    Target().firstTarget()
+    Target().secondTarget()
+    Target().trihrdTarget()
+    active_sprite_list.draw(screen)
 
     for event in pygame.event.get():
 
@@ -275,13 +267,49 @@ while not done:
                 player.stop()
             #
             # if event.key == pygame.K_SPACE:
-            #     player.shot()
+            #     player.shot( )
             if event.key == pygame.K_e:
-                print(player.rect.x)
+                # print(player.rect.x)
                 # player.stop()
                 # h = (rect_x + rect_width, rect_y)
-                Bullet(340, 500).move()
+                # Bullet(340, 500).move()
+                active_sprite_list.update()
+
+                # active_sprite_list.add(laser1)
+                # laser_group.add(laser1)
+                # targetss.add(target11)
+                # targetss.add(target21)
+                # targetss.add(target31)
+                # hits = pygame.sprite.groupcollide(targetss, laser_group, True, True)
+
+                bul = Bullet(player.rect.right, player.rect.centery).move()
+                # hits = laser_rect.colliderect(Target().firstTarget())
+
+                # all_sprites.update()
+                # hits = pygame.sprite.spritecollide(laser_rect, target1, False)
+                # if hits:
+                #     score += 1
+                #     print (score)
+
+                if target1.colliderect(laser_rect):
+                    score += 1
+                    print (score)
+                #
+
+                # if target_rect1.collidepoint(laser_rect.center):
+                # hits = pygame.sprite.spritecollide(laser_rect, target_rect1, False)
+                # if hits:
+                #     print(28)
+
+                # collide = rect1.colliderect(rect2)
+
+                # if laser_rect.y >= target_rect.bottom and laser_rect.y <= target_rect.top:
+                #     score += 1
+                #     print(score)
+                #     if score == 3:
+                #         pass
                 pygame.display.flip()
+
                 # for bullet in all_btn_bullets:
                 #     if not bullet.move():
                 #         all_btn_bullets.remove(bullet)
@@ -294,11 +322,11 @@ while not done:
     if player.rect.left < 0:
         player.rect.left = 0
 
-    current_level.draw(screen)
-    Target().firstTarget()
-    Target().secondTarget()
-    Target().trihrdTarget()
-    active_sprite_list.draw(screen)
+    # current_level.draw(screen)
+    # Target().firstTarget()
+    # Target().secondTarget()
+    # Target().trihrdTarget()
+    # active_sprite_list.draw(screen)
 
     clock.tick(30)
 
